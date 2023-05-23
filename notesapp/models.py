@@ -5,9 +5,9 @@ from django.db import models
 # Create your models here.
 class Note(models.Model):
     PRIORITY_CHOICES = (
-        ('low', 'Low'),
-        ('medium', 'Medium'),
-        ('high', 'High'),
+        ('1', 'Low'),
+        ('2', 'Medium'),
+        ('3', 'High'),
     )
     title = models.CharField(max_length=50)
     content = models.TextField()
@@ -16,4 +16,4 @@ class Note(models.Model):
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='low')
 
     class Meta:
-        ordering = ['-priority', '-created_date']
+        ordering = ['-priority', 'created_date']
