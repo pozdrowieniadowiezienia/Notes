@@ -23,6 +23,26 @@ class NoteListView(LoginRequiredMixin, View):
 note_list_view = NoteListView.as_view()
 
 
+class NoteCreateView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
+    def get(self, request):
+        form = NoteForm()
+        return render(request, 'note_form.html', {'form': form})
+
+    def post(self, request):
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.author = request.user
+            note.save()
+            return redirect('note_list')
+        return render(request, 'note_form.html', {'form': form})
+
+
+note_create_view = NoteCreateView.as_view()
+
+
 class NoteDetailView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 

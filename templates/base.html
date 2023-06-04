@@ -19,10 +19,12 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
-                        <p>todo</p>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'note_create' %}">Add Note</a>
+                        </li>
                     {% else %}
                         <li class="nav-item">
-                            <p>login</p>
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
                         </li>
                     {% endif %}
                 </ul>
