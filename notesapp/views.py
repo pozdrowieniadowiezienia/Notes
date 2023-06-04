@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 
+from .forms import NoteForm
 from .models import Note
 
 
@@ -20,3 +21,14 @@ class NoteListView(LoginRequiredMixin, View):
 
 
 note_list_view = NoteListView.as_view()
+
+
+class NoteDetailView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
+    def get(self, request, pk):
+        note = Note.objects.get(pk=pk, author=request.user)
+        return render(request, 'note_detail.html', {'note': note})
+
+
+note_detail_view = NoteDetailView.as_view()

@@ -5,7 +5,7 @@
   <ul class="list-group">
     {% for note in page_obj %}
       <li class="list-group-item">
-        <p>{{ note.title }}</p>
+        <a href="{% url 'note_detail' note.pk %}">{{ note.title }}</a>
         <span class="badge bg-primary">{{ note.get_priority_display }}</span>
       </li>
     {% empty %}
