@@ -72,3 +72,15 @@ class NoteUpdateView(LoginRequiredMixin, View):
 
 
 note_update_view = NoteUpdateView.as_view()
+
+
+class NoteDeleteView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
+    def post(self, request, pk):
+        note = Note.objects.get(pk=pk, author=request.user)
+        note.delete()
+        return redirect('note_list')
+
+
+note_delete_view = NoteDeleteView.as_view()
