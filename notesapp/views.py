@@ -1,10 +1,11 @@
+from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 
-from .forms import NoteForm
+from .forms import NoteForm, LoginForm
 from .models import Note
 
 
@@ -84,3 +85,34 @@ class NoteDeleteView(LoginRequiredMixin, View):
 
 
 note_delete_view = NoteDeleteView.as_view()
+
+
+class LoginView(View):
+    def get(self, request):
+        form = LoginForm()
+        return render(request, 'log/login.html', {'form': form})
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('note_list')
+        return render(request, 'log/login.html', {'form': form})
+
+
+login_view = LoginView.as_view()
+
+
+class LogoutView(View):
+    login_url = reverse_lazy('login')
+
+    def get(self, request):
+        logout(request)
+        return redirect('login')
+
+
+logout_view = LogoutView.as_view()
